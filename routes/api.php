@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 Route::post('/menus', 'MenuController@store');
 Route::get('/menus/{menu}', 'MenuController@show');
 Route::put('/menus/{menu}', 'MenuController@update');
