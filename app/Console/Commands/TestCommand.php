@@ -14,7 +14,7 @@ class TestCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'TestCommand:dupa';
+    protected $signature = 'test:items {layer}';
 
     /**
      * The console command description.
@@ -40,9 +40,38 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        $menu = new Menu(Uuid::uuid4(), 4, 5);
+        $input = <<<TXT
+[
+    {
+        "field": "value",
+        "children": [
+            {
+                "field": "value",
+                "children": []
+            },
+            {
+                "field": "value"
+            }
+        ]
+    },
+    {
+        "field": "value"
+    }
+]
+TXT;
 
+
+
+
+        $menu = new Menu(Uuid::uuid4(), 4, 5);
         $item1 = $menu->addItem('Pierwsze');
+
+        $exampleInput = json_decode($input, true);
+        foreach ($exampleInput as $item) {
+            $menu->addItem($item['field'], $item['children'] ?? []);
+        }
+
+
         $item2 = $menu->addItem('Drugie');
         $item3 = $menu->addItem('Trzecie');
 
@@ -53,8 +82,10 @@ class TestCommand extends Command
         $menu->addSubItem($sub, 'hey');
         $menu->addSubItem($sub2, 'ho');
 
+        var_dump(json_encode($menu->toArray()));die();
+
         $this->printMenu($menu);
-        $menu->removeLayer(0);
+        $menu->removeLayer($this->argument('layer'));
         $this->output->writeln('----------');
         $this->printMenu($menu);
     }

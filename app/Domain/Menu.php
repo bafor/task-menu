@@ -31,13 +31,17 @@ class Menu
 
     public function removeLayer(int $layer): void
     {
-        $layerMaxDepth = $this->maxDepth - $layer - 1;
+        if ($layer < 1) {
+            throw new \DomainException('Can\t delete layer lower than 1');
+        }
 
         if ($this->countLayerChildren($layer) > $this->maxDepth) {
             throw new \DomainException('Can\'t remove layer number. Shifted next layer will exceed max children limit');
         }
 
-        if ($layerMaxDepth === $this->maxDepth) {
+        $layerMaxDepth = $this->maxDepth - $layer;
+
+        if ($layerMaxDepth + 1 === $this->maxDepth) {
             $this->children = array_merge(
                 ...array_map(function (MenuItem $item) {
                     $item->moveUp();
@@ -47,9 +51,9 @@ class Menu
             return;
         }
 
-        $this->children = array_map(function (MenuItem $item) use ($layer) {
-
-        }, $this->children);
+        foreach ($this->children as $item) {
+            $item->removeLayer($layerMaxDepth);
+        }
     }
 
     private function countLayerChildren(int $layer)
@@ -60,14 +64,25 @@ class Menu
         }, 0);
     }
 
-    public function addItem(string $field): UuidInterface
+    public function addItem(string $field, array $children = []): UuidInterface
     {
         if (\count($this->children) === $this->maxChildren) {
             throw AddMenuItemFailed::maxChildrenExceeded($field);
         }
 
         $itemId            = Uuid::uuid4();
-        $this->children [] = new MenuItem($itemId, $field, $this->maxDepth - 1, $this->maxChildren);
+        $menuItem          = new MenuItem(
+            $itemId,
+            $field,
+            $this->maxDepth - 1,
+            $this->maxChildren
+        );
+        $this->children [] = $menuItem;
+
+        foreach ($children as $child) {
+            $menuItem->addChild($child['field'], $child['children'] ?? []);
+        }
+
         return $itemId;
     }
 
@@ -83,8 +98,8 @@ class Menu
 
     private function getItem(UuidInterface $id): MenuItem
     {
-        foreach ($this->children as $child) {
-            $item = $child->findItem($id);
+        foreach ($this->children as $item) {
+            $item = $item->findItem($id);
             if (null !== $item) {
                 return $item;
             }
@@ -115,6 +130,21 @@ class Menu
     public function children(): array
     {
         return $this->children;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id->toString(),
+            'max_depth' => $this->maxDepth,
+            'max_children' => $this->maxChildren,
+            'children' => array_map(
+                function (MenuItem $item) {
+                    return $item->toArray();
+                },
+                $this->children
+            )
+        ];
     }
 
 }

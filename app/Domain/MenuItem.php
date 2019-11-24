@@ -33,6 +33,11 @@ class MenuItem
         $this->field = $field;
     }
 
+    public function updateName(string $name): void
+    {
+        $this->field = $name;
+    }
+
     public function countLayerChildren(int $layerDepth)
     {
         if ($this->maxDepth === $layerDepth) {
@@ -48,6 +53,31 @@ class MenuItem
         }, 0);
     }
 
+    public function removeLayer(int $layerMaxDepth): void
+    {
+        if (empty($this->children)) {
+            return;
+        }
+
+        if ($layerMaxDepth + 1 === $this->maxDepth) {
+            $this->children = array_merge(
+                ...array_map(function (MenuItem $item) {
+                    $item->moveUp();
+                    return $item->children();
+                }, $this->children)
+            );
+            return;
+        }
+
+        if ($layerMaxDepth <= $this->maxDepth) {
+            return;
+        }
+
+        foreach ($this->children as $child) {
+            $child->removeLayer($layerMaxDepth);
+        }
+    }
+
     public function moveUp(): void
     {
         $this->maxDepth++;
@@ -61,14 +91,20 @@ class MenuItem
         $this->children = [];
     }
 
-    public function addChild(string $field): UuidInterface
+    public function addChild(string $field, array $children = []): UuidInterface
     {
         if (\count($this->children) === $this->maxChildren) {
             throw AddMenuItemFailed::maxChildrenExceeded($field);
         }
 
-        $itemId                               = Uuid::uuid4();
-        $this->children [$itemId->toString()] = new MenuItem($itemId, $field, $this->maxDepth - 1, $this->maxChildren);
+        $itemId            = Uuid::uuid4();
+        $menuItem          = new MenuItem($itemId, $field, $this->maxDepth - 1, $this->maxChildren);
+        $this->children [] = $menuItem;
+
+        foreach ($children as $child) {
+            $menuItem->addChild($child['field'], $child['children'] ?? []);
+        }
+
         return $itemId;
     }
 
@@ -119,6 +155,21 @@ class MenuItem
     public function childCount(): int
     {
         return \count($this->children);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id->toString(),
+            'max_depth' => $this->maxDepth,
+            'max_children' => $this->maxChildren,
+            'field' => $this->field,
+            'children' => array_map(
+                function (MenuItem $item) {
+                    return $item->toArray();
+                }, $this->children
+            )
+        ];
     }
 
 }
