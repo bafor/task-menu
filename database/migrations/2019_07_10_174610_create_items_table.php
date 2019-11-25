@@ -6,27 +6,20 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateItemsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->bigIncrements('id');
-
-            //
-
-            $table->timestamps();
+            $table->uuid('id')->primary();
+            $table->uuid('menu_id');
+            $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
+            $table->uuid('parent_id')->nullable();
+            $table->foreign('parent_id')->references('id')->on('items')->onDelete('cascade');
+            $table->string('field', 255);
+            $table->integer('max_dDepth');
+            $table->integer('max_children');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('items');

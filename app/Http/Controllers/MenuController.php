@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Ramsey\Uuid\UuidInterface;
 
 class MenuController extends Controller
 {
@@ -23,9 +24,9 @@ class MenuController extends Controller
      * @param  mixed  $menu
      * @return \Illuminate\Http\Response
      */
-    public function show($menu)
+    public function show(UuidInterface $menu)
     {
-        //
+        var_dump($menu);die();
     }
 
     /**

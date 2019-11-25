@@ -82,7 +82,7 @@ TXT;
         $menu->addSubItem($sub, 'hey');
         $menu->addSubItem($sub2, 'ho');
 
-        var_dump(json_encode($menu->toArray()));die();
+        \App\Menu::saveFromArray($menu->toArray());
 
         $this->printMenu($menu);
         $menu->removeLayer($this->argument('layer'));
