@@ -1,3 +1,17 @@
+# My comments
+
+I thought that taking this task literally will be boring. 
+Preparing a simple api based on laravel default behavior is not challenging.
+And since I am not familiar with laravel framework it will be hard for me to do defend my solution based on basic cases described in documentation.
+During the interview video-call we were talking about separating storage in CQS, Eloquent active record "anti pattern" and idea of defense programing.
+So I thought that could be funny if I'll play with the convention a little. 
+So I decided that I'll try to prepare a domain model separated from framework logic, store it as serialized string in file
+and use eloquent as a view model stored in sqlite database.
+I realized that it was a mistake after a couple of hours... But I decided to be stubborn. 
+So it took a lot of my time and I still haven't finished.
+I've prepared some basic skeleton... But it's still a lot of work left. It would be a lot easier if I just play with database tree structure map to eloquent models 
+
+
 # Menu manager
 
 
@@ -11,7 +25,7 @@
 
 Fork or Download this repository and implement the logic to manage a menu.
 
-A Menu has a depth of **N** and maximum number of items per layer **M**. Consider **N** and **M** to be dynamic for bonus points.
+A Menu has a depth of **N** and maximum num 11ber of items per layer **M**. Consider **N** and **M** to be dynamic for bonus points.
 
 It should be possible to manage the menu by sending API requests. Do not implement a frontend for this task.
 
