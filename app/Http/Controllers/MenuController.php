@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\MenuItemCollection;
+use App\Http\Resources\MenuItems;
 use Illuminate\Http\Request;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use App\Http\Resources\Menu;
 
 class MenuController extends Controller
 {
@@ -24,9 +28,14 @@ class MenuController extends Controller
      * @param  mixed  $menu
      * @return \Illuminate\Http\Response
      */
-    public function show(UuidInterface $menu)
+    public function show($menu)
     {
-        var_dump($menu);die();
+
+//        return new Menu(\App\Menu::find($menu));
+//        # todo move to other layer
+//        $menuId = Uuid::fromString($menu);
+//
+//        var_dump($menu);die();
     }
 
     /**

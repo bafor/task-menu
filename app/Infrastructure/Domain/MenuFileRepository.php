@@ -11,11 +11,16 @@ class MenuFileRepository implements Menus
 
     public function getById(UuidInterface $menuId)
     {
-        throw new \Exception("not implemented yet");
+        ///
+        ///
+//        return Menu::fromArray(json_decode(true,))
     }
 
     public function save(Menu $menu)
     {
-        throw new \Exception("not implemented yet");
+        /// json_encode($menu->toArray());
+
+        // aassume that i serailizie it and store somwhere
+        return;
     }
 }

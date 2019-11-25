@@ -64,19 +64,17 @@ TXT;
 
 
         $menu = new Menu(Uuid::uuid4(), 4, 5);
-        $item1 = $menu->addItem('Pierwsze');
+        $item1 = $menu->addItem('frist');
 
-        $exampleInput = json_decode($input, true);
-        foreach ($exampleInput as $item) {
-            $menu->addItem($item['field'], $item['children'] ?? []);
-        }
+//        $exampleInput = json_decode($input, true);
+//        foreach ($exampleInput as $item) {
+//            $menu->addItem($item['field'], $item['children'] ?? []);
+//        }
 
 
-        $item2 = $menu->addItem('Drugie');
-        $item3 = $menu->addItem('Trzecie');
+        $item2 = $menu->addItem('Second');
+        $item3 = $menu->addItem('third');
 
-        $menu->addSubItem($item1, 'sub');
-        $menu->addSubItem($item1, 'sub2');
         $sub  = $menu->addSubItem($item1, 'sub sub 1');
         $sub2 = $menu->addSubItem($item1, 'sub sub 2');
         $menu->addSubItem($sub, 'hey');

@@ -6,12 +6,12 @@ use App\Domain\Menu;
 use App\Domain\Menus;
 use Ramsey\Uuid\UuidInterface;
 
-class MenuViewEloquentRepository implements Menus
+class MenuViewEloquentRepository
 {
 
     public function getById(UuidInterface $menuId)
     {
-        throw new \Exception("not implemented yet");
+        return \App\Menu::findOrFail($menuId);
     }
 
     public function save(Menu $menu)

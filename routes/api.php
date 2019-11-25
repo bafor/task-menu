@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+//use Illuminate\Support\Facades\Route;
 
 Route::post('/menus', 'MenuController@store');
 Route::get('/menus/{menu}', 'MenuController@show');
@@ -15,7 +15,7 @@ Route::delete('/menus/{menu}/items', 'MenuItemController@destroy');
 Route::get('/menus/{menu}/layers/{layer}', 'MenuLayerController@show');
 Route::delete('/menus/{menu}/layers/{layer}', 'MenuLayerController@destroy');
 
-Route::get('/menus/{menu}/depth', 'MenuDepthControlles@show');
+Route::get('/menus/{menu}/depth', 'MenuDepthController@show');
 
 Route::post('/items', 'ItemController@store');
 Route::get('/items/{item}', 'ItemController@show');

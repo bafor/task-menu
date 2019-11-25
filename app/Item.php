@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Ramsey\Uuid\UuidInterface;
 
 class Item extends Model
 {
@@ -12,22 +14,22 @@ class Item extends Model
     protected $keyType      = 'string';
     public    $timestamps   = false;
 
-    public static function fromArray(Menu $menu, array $data)
+    public static function fromArray(UuidInterface $menuId, array $data)
     {
-        $item = new self();
-        $item->menu()->associate($menu);
-        $item->id          = $data['id'];
+        $item               = new self();
+        $item->menu_id      = $menuId;
+        $item->id           = $data['id'];
         $item->max_depth    = $data['max_depth'];
         $item->max_children = $data['max_children'];
-        $item->field       = $data['field'];
+        $item->field        = $data['field'];
 
         $item->save();
 
         $item->children()->saveMany(
             array_filter(
                 array_map(
-                    function (array $data) use ($menu) {
-                        return Item::fromArray($menu, $data);
+                    function (array $data) use ($menuId) {
+                        return Item::fromArray($menuId, $data);
                     }, $data['children']
                 )
             )
@@ -36,9 +38,9 @@ class Item extends Model
         return $item;
     }
 
-    public function menu(): BelongsTo
+    public function owner(): BelongsTo
     {
-        return $this->belongsTo(Menu::class);
+        return $this->belongsTo(Menu::class, 'owner_id');
     }
 
     public function parent(): BelongsTo

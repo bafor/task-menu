@@ -10,12 +10,12 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('menu_id');
-            $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
+            $table->uuid('owner_id')->nullable()->index();
+            $table->uuid('menu_id')->index();
             $table->uuid('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on('items')->onDelete('cascade');
             $table->string('field', 255);
-            $table->integer('max_dDepth');
+            $table->integer('max_depth');
             $table->integer('max_children');
         });
     }
