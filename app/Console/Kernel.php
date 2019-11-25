@@ -7,7 +7,4 @@ use App\Console\Commands\TestCommand;
 
 class Kernel extends ConsoleKernel
 {
-    protected $commands = [
-        TestCommand::class
-    ];
 }
