@@ -3,6 +3,7 @@
 namespace App\Domain;
 
 use App\Domain\Exception\AddMenuItemFailed;
+use App\Domain\Exception\ItemsOnLayerBelowExceedChildrenLimit;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -19,7 +20,7 @@ class Menu
 
     public function __construct(UuidInterface $id, int $maxDepth, int $maxChildren)
     {
-        if ($maxDepth < 0 || $maxChildren < 0) {
+        if ($maxDepth < 1 || $maxChildren < 1) {
             throw new \DomainException('Could not create menu item');
         }
 
@@ -35,8 +36,8 @@ class Menu
             throw new \DomainException('Can\t delete layer lower than 1');
         }
 
-        if ($this->countLayerChildren($layer) > $this->maxDepth) {
-            throw new \DomainException('Can\'t remove layer number. Shifted next layer will exceed max children limit');
+        if ($this->countLayerChildren($layer) > $this->maxChildren) {
+            throw new ItemsOnLayerBelowExceedChildrenLimit();
         }
 
         $layerMaxDepth = $this->maxDepth - $layer;
@@ -58,7 +59,7 @@ class Menu
 
     private function countLayerChildren(int $layer)
     {
-        $layerMaxDepth = $this->maxDepth - $layer - 1;
+        $layerMaxDepth = $this->maxDepth - $layer;
         return array_reduce($this->children, function (int $count, MenuItem $item) use ($layerMaxDepth) : int {
             return $count + $item->countLayerChildren($layerMaxDepth);
         }, 0);
@@ -96,7 +97,7 @@ class Menu
         $this->getItem($itemId)->deleteChildren();
     }
 
-    private function getItem(UuidInterface $id): MenuItem
+    public function getItem(UuidInterface $id): MenuItem
     {
         foreach ($this->children as $item) {
             $item = $item->findItem($id);
@@ -122,6 +123,11 @@ class Menu
     public function maxDepth(): int
     {
         return $this->maxDepth;
+    }
+
+    public function maxChildren(): int
+    {
+        return $this->maxChildren;
     }
 
     /**
