@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Route;
+use App\Exceptions\NotFound;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
+use Ramsey\Uuid\Exception\InvalidUuidStringException;
+use Ramsey\Uuid\Uuid;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -16,8 +19,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected $namespace = 'App\Http\Controllers';
 
-
-
     /**
      * Define the routes for the application.
      *
@@ -26,7 +27,7 @@ class RouteServiceProvider extends ServiceProvider
     public function map()
     {
         Route::prefix('api')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/api.php'));
+            ->namespace($this->namespace)
+            ->group(base_path('routes/api.php'));
     }
 }

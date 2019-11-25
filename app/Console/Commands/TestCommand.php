@@ -72,6 +72,7 @@ TXT;
 //        }
 
 
+
         $item2 = $menu->addItem('Second');
         $item3 = $menu->addItem('third');
 
@@ -80,7 +81,8 @@ TXT;
         $menu->addSubItem($sub, 'hey');
         $menu->addSubItem($sub2, 'ho');
 
-        \App\Menu::saveFromArray($menu->toArray());
+        var_dump(serialize($menu));die();
+        \App\View\Menu::saveFromArray($menu->toArray());
 
         $this->printMenu($menu);
         $menu->removeLayer($this->argument('layer'));

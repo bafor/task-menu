@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Domain\Menus as MenusDomain;
+use App\Infrastructure\Domain\MenuFileRepository;
+use App\Infrastructure\View\MenuViewEloquentRepository;
+use App\View\Menus;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,7 +18,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(Menus::class, MenuViewEloquentRepository::class);
+        $this->app->bind(MenusDomain::class, MenuFileRepository::class);
     }
 
     /**

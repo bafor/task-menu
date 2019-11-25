@@ -10,7 +10,8 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('owner_id')->nullable()->index();
+            $table->uuid('owner_id')->nullable();
+            $table->foreign('owner_id')->references('id')->on('menus')->onDelete('cascade');
             $table->uuid('menu_id')->index();
             $table->uuid('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on('items')->onDelete('cascade');

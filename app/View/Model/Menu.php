@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\View\Model;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Menu extends JsonResource

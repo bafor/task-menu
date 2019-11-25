@@ -9,4 +9,6 @@ interface Menus
     public function getById(UuidInterface $menuId);
 
     public function save(Menu $menu);
+
+    public function delete(Menu $menu);
 }

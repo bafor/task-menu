@@ -1,15 +1,15 @@
 <?php
 
-//use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route;
 
-Route::post('/menus', 'MenuController@store');
-Route::get('/menus/{menu}', 'MenuController@show');
+Route::post('/menus', 'CreateMenu@create');
+Route::get('/menus/{menu}', 'ShowMenu@show');
 Route::put('/menus/{menu}', 'MenuController@update');
 Route::patch('/menus/{menu}', 'MenuController@update');
-Route::delete('/menus/{menu}', 'MenuController@destroy');
+Route::delete('/menus/{menu}', 'DeleteMenu@destroy');
 
 Route::post('/menus/{menu}/items', 'MenuItemController@store');
-Route::get('/menus/{menu}/items', 'MenuItemController@show');
+Route::get('/menus/{menu}/items', 'ShowMenuItems@showItems');
 Route::delete('/menus/{menu}/items', 'MenuItemController@destroy');
 
 Route::get('/menus/{menu}/layers/{layer}', 'MenuLayerController@show');

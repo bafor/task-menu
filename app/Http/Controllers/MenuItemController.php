@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\MenuItemCollection;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class MenuItemController extends Controller
 {
@@ -16,18 +15,7 @@ class MenuItemController extends Controller
      */
     public function store(Request $request)
     {
-        throw new \Exception('not implented because of lack of sense');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param mixed $menu
-     * @return \Illuminate\Http\Response
-     */
-    public function show($menu)
-    {
-        return new MenuItemCollection(\App\Menu::find($menu)->root->children);
+        throw new \Exception('I have no idea how item could be created outside menu context');
     }
 
     /**
